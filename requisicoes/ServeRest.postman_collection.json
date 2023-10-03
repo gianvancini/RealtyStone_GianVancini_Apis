@@ -1,0 +1,4445 @@
+{
+	"info": {
+		"_postman_id": "604067e1-e19d-4215-8e56-b203c02fe6b8",
+		"name": "ServeRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29003845"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Login realizado com sucesso')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'authorization'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"teste@teste.com\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login invalid (user not cad.)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Email e/ou senha inválidos')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'authorization'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.not.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"aa@bb.cc\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login invalid (email invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'email'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('email deve ser um email válido')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'authorization'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.not.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"fulano\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login invalid (empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'email'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('email é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'password'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('password é obrigatório')\r",
+									"})\r",
+									"\r",
+									"\r",
+									"propertyName = 'authorization'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.not.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuários",
+			"item": [
+				{
+					"name": "list all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'quantidade'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})\r",
+									"\r",
+									"propertyName = 'usuarios'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create invalid (empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('nome não pode ficar em branco')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'email'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('email não pode ficar em branco')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'password'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('password não pode ficar em branco')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'administrador'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"administrador deve ser 'true' ou 'false'\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"\",\r\n  \"email\": \"\",\r\n  \"password\": \"\",\r\n  \"administrador\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create invalid (duplicity)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Este email já está sendo usado')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"nome\": \"Paulo José\",\r",
+									"            \"email\": \"paulo@jose.com\",\r",
+									"            \"password\": \"123456\",\r",
+									"            \"administrador\": \"true\"\r",
+									"        })\r",
+									"    }\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log(err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Paulo José\",\r\n    \"email\": \"paulo@jose.com\",\r\n    \"password\": \"123456\",\r\n    \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create invalid (email inv.)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'email'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('email deve ser um email válido')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"fulano\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(8);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user (pass 3 char)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(3);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user (pass 12 char)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(12);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user (gmail)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@gmail.com\";\r",
+									"const randomString = generateRandomString(8);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user (hotmail)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(8);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list user id (valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Fulano da Silva')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/0uxuPY0cbmQhpEz1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"0uxuPY0cbmQhpEz1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list user id (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Usuário não encontrado')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/aaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"aaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user (empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 405\", function() {\r",
+									"    pm.response.to.have.status(405);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não é possível realizar DELETE em /usuarios/. Acesse https://serverest.dev para ver as rotas disponíveis e como utilizá-las.')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Nenhum registro excluído')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoUsuario = resposta.usuarios[resposta.usuarios.length - 1];\r",
+									"            const deleteUser = ultimoUsuario._id; \r",
+									"\r",
+									"            pm.environment.set('deleteUser', deleteUser);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum usuário encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/{{deleteUser}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"{{deleteUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user (empty path)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 405\", function() {\r",
+									"    pm.response.to.have.status(405);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não é possível realizar PUT em /usuarios/. Acesse https://serverest.dev para ver as rotas disponíveis e como utilizá-las.')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user (empty body)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('nome é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'email'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('email é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'password'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('password é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'administrador'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('administrador é obrigatório')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoUsuario = resposta.usuarios[resposta.usuarios.length - 1];\r",
+									"            const editUser = ultimoUsuario._id; \r",
+									"\r",
+									"            pm.environment.set('editUser', editUser);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum usuário encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(8);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro alterado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/{{editUser}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"{{editUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user new id(valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoUsuario = resposta.usuarios[resposta.usuarios.length - 1];\r",
+									"            const editUser = ultimoUsuario._id; \r",
+									"\r",
+									"            pm.environment.set('editUser', editUser);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum usuário encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const domain = \"@example.com\";\r",
+									"const randomString = generateRandomString(8);\r",
+									"const email = randomString + domain\r",
+									"const name = randomString\r",
+									"const id = generateRandomString(10);\r",
+									"\r",
+									"pm.variables.set('email', email);\r",
+									"pm.variables.set('name', name);\r",
+									"pm.environment.set('editUserNewId', id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso');\r",
+									"})\r",
+									"\r",
+									"propertyName = '_id'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{name}}\",\r\n  \"administrador\": \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/{{editUserNewId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"{{editUserNewId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user (duplicity email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoUsuario = resposta.usuarios[resposta.usuarios.length - 1];\r",
+									"            const penultimoUsuario = resposta.usuarios[resposta.usuarios.length - 2];\r",
+									"            const editUser = ultimoUsuario._id; \r",
+									"            \r",
+									"            const nameUser = ultimoUsuario.nome\r",
+									"            const passwordUser = ultimoUsuario.password\r",
+									"            const emailUser = penultimoUsuario.email;\r",
+									"\r",
+									"            pm.variables.set('emailUser', emailUser);\r",
+									"            pm.variables.set('name', nameUser);\r",
+									"            pm.variables.set('password', passwordUser);\r",
+									"            pm.environment.set('editUser', editUser);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum usuário encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Este email já está sendo usado')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{nameUser}}\",\r\n  \"email\": \"{{emailUser}}\",\r\n  \"password\": \"{{namePassword}}\",\r\n  \"administrador\": \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/usuarios/{{editUser}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"usuarios",
+								"{{editUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "list all products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'quantidade'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})\r",
+									"\r",
+									"propertyName = 'produtos'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product(empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 405\", function() {\r",
+									"    pm.response.to.have.status(405);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não é possível realizar DELETE em /produtos/. Acesse https://serverest.dev para ver as rotas disponíveis e como utilizá-las.')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Nenhum registro excluído')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product in shopcart (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('deleteProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('deleteProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não é permitido excluir produto que faz parte de carrinho')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{deleteProduct}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{deleteProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 2];\r",
+									"            const deleteProduct = ultimoProduto._id; \r",
+									"\r",
+									"            pm.environment.set('deleteProduct', deleteProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{deleteProduct}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{deleteProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product (no token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Logitech MX Vertical\",\r\n  \"preco\": 470,\r\n  \"descricao\": \"Mouse\",\r\n  \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product (with token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = '_id'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Cadastro realizado com sucesso\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(5);\r",
+									"const descricao = generateRandomString(5);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"preco\": 999,\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": 111\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product (empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"nome é obrigatório\");\r",
+									"})\r",
+									"\r",
+									"propertyName = 'preco'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"preco é obrigatório\");\r",
+									"})\r",
+									"\r",
+									"propertyName = 'descricao'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"descricao é obrigatório\");\r",
+									"})\r",
+									"\r",
+									"propertyName = 'quantidade'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"quantidade é obrigatório\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(5);\r",
+									"const descricao = generateRandomString(5);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product (duplicity)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Já existe produto com esse nome\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(5);\r",
+									"const descricao = generateRandomString(5);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);\r",
+									"\r",
+									"const postRequest2 = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"nome\": `${name}`,\r",
+									"            \"preco\": 999,\r",
+									"            \"descricao\": `${descricao}`,\r",
+									"            \"quantidade\": 111\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest2, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"preco\": 999,\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": 111\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product (not adm)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function() {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Rota exclusiva para administradores\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/login`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": \"teste99@teste.com\",\r",
+									"            \"password\": \"teste99\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"\r",
+									"    pm.environment.set(\"token\", res.json().authorization.slice(7));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Logitech MX Vertical\",\r\n  \"preco\": 470,\r\n  \"descricao\": \"Mouse\",\r\n  \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list product id (valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Logitech MX Vertical\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/BeeJh5lz3k6kSIzA",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"BeeJh5lz3k6kSIzA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list product id (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Produto não encontrado\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product(empty path)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 405\", function() {\r",
+									"    pm.response.to.have.status(405);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não é possível realizar PUT em /produtos/. Acesse https://serverest.dev para ver as rotas disponíveis e como utilizá-las.')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product (empty body)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'nome'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('nome é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'preco'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('preco é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'descricao'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('descricao é obrigatório')\r",
+									"})\r",
+									"\r",
+									"propertyName = 'quantidade'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('quantidade é obrigatório')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const editProduct = ultimoProduto._id; \r",
+									"\r",
+									"            pm.environment.set('editProduct', editProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum Produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(8);\r",
+									"const descricao = generateRandomString(8);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro alterado com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"preco\": \"666\",\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": \"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{editProduct}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{editProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product (no token)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const editProduct = ultimoProduto._id; \r",
+									"\r",
+									"            pm.environment.set('editProduct', editProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum Produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(8);\r",
+									"const descricao = generateRandomString(8);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"preco\": \"666\",\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": \"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{editProduct}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{editProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product new id(valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const editProduct = ultimoProduto._id; \r",
+									"\r",
+									"            pm.environment.set('editProduct', editProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"function generateRandomString(length) {\r",
+									"    let result = '';\r",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * characters.length);\r",
+									"        result += characters.charAt(randomIndex);\r",
+									"    }\r",
+									"\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const name = generateRandomString(8);\r",
+									"const descricao = generateRandomString(8);\r",
+									"const id = generateRandomString(10);\r",
+									"\r",
+									"pm.variables.set('descricao', descricao);\r",
+									"pm.variables.set('name', name);\r",
+									"pm.environment.set('editUserNewId', id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso');\r",
+									"})\r",
+									"\r",
+									"propertyName = '_id'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{name}}\",\r\n  \"preco\": \"9999\",\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": \"333\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{editUserNewId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{editUserNewId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit product (duplicity name)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const penultimoProduto = resposta.produtos[resposta.produtos.length - 2];\r",
+									"            const editProduct = ultimoProduto._id; \r",
+									"            \r",
+									"            const nomeProduto = penultimoProduto.nome\r",
+									"            const quantidadeProduto = ultimoProduto.quantidade\r",
+									"            const descricaoProduto = ultimoProduto.descricao;\r",
+									"            const precoProduto = ultimoProduto.preco;\r",
+									"\r",
+									"            pm.variables.set('nomeProduto', nomeProduto);\r",
+									"            pm.variables.set('quantidadeProduto', quantidadeProduto);\r",
+									"            pm.variables.set('descricaoProduto', descricaoProduto);\r",
+									"            pm.variables.set('precoProduto', precoProduto);\r",
+									"            pm.environment.set('editProduct', editProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Já existe produto com esse nome')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{nomeProduto}}\",\r\n  \"preco\": \"{{precoProduto}}\",\r\n  \"descricao\": \"{{descricaoProduto}}\",\r\n  \"quantidade\": \"{{quantidadeProduto}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{editUser}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{editUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const host = pm.environment.get('host');",
+							"",
+							"const loginRequest = {",
+							"    url: `${host}/login`,",
+							"    method: \"POST\",",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            \"email\": \"teste@teste.com\",",
+							"            \"password\": \"teste\"",
+							"        })",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(loginRequest, (err, res) => {",
+							"    console.log( err ? err : res.json());",
+							"    pm.environment.set(\"token\", res.json().authorization.slice(7));",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Carrinhos",
+			"item": [
+				{
+					"name": "list all shopcart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'quantidade'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})\r",
+									"\r",
+									"propertyName = 'carrinhos'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shopcart (no token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"BeeJh5lz3k6kSIzA\",\r\n      \"quantidade\": 1\r\n    },\r\n    {\r\n      \"idProduto\": \"YaeJ455lz3k6kSIzA\",\r\n      \"quantidade\": 3\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shopcart (with token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"propertyName = '_id'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Cadastro realizado com sucesso\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    headers: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id; \r",
+									"\r",
+									"            pm.variables.set('id', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"{{id}}\",\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shopcart (duplicity)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Não é permitido ter mais de 1 carrinho\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"{{idProduct}}\",\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list shopcart id (valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'produtos'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/qbMqntef4iTOwWfg",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"qbMqntef4iTOwWfg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list shopcart id (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Carrinho não encontrado\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/aaaa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"aaaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete checkout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/concluir-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"concluir-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete checkout (no shopcart)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não foi encontrado carrinho para esse usuário')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/concluir-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"concluir-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete checkout (no token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/concluir-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"concluir-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete cancel order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso. Estoque dos produtos reabastecido')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/cancelar-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"cancelar-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete cancel order (no shopcart)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Não foi encontrado carrinho para esse usuário')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/cancelar-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"cancelar-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete cancel (no token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos/cancelar-compra",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos",
+								"cancelar-compra"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const host = pm.environment.get('host');",
+							"",
+							"const loginRequest = {",
+							"    url: `${host}/login`,",
+							"    method: \"POST\",",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            \"email\": \"teste@teste.com\",",
+							"            \"password\": \"teste\"",
+							"        })",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(loginRequest, (err, res) => {",
+							"    console.log( err ? err : res.json());",
+							"",
+							"    pm.environment.set(\"token\", res.json().authorization.slice(7));",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const host = pm.environment.get('host');",
+					"",
+					"const postRequest = {",
+					"    url: `${host}/usuarios`,",
+					"    method: \"POST\",",
+					"    header: {",
+					"        'Content-Type': 'application/json'",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            \"nome\": \"Teste\",",
+					"            \"email\": \"teste@teste.com\",",
+					"            \"password\": \"teste\",",
+					"            \"administrador\": \"true\",",
+					"        })",
+					"    }",
+					"}",
+					"",
+					"const postRequest2 = {",
+					"    url: `${host}/usuarios`,",
+					"    method: \"POST\",",
+					"    header: {",
+					"        'Content-Type': 'application/json'",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            \"nome\": \"Teste99\",",
+					"            \"email\": \"teste99@teste.com\",",
+					"            \"password\": \"teste99\",",
+					"            \"administrador\": \"false\",",
+					"        })",
+					"    }",
+					"}",
+					"",
+					"pm.sendRequest(postRequest, (err, res) => {",
+					"    console.log( err ? err : res.json());",
+					"})",
+					"",
+					"pm.sendRequest(postRequest2, (err, res) => {",
+					"    console.log( err ? err : res.json());",
+					"})"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
