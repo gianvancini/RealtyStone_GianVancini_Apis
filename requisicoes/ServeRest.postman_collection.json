@@ -3459,6 +3459,111 @@
 					"response": []
 				},
 				{
+					"name": "create shopcart (empty)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'produtos'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"produtos é obrigatório\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    headers: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id; \r",
+									"\r",
+									"            pm.variables.set('id', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create shopcart (duplicity)",
 					"event": [
 						{
