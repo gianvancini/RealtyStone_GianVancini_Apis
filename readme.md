@@ -34,6 +34,10 @@ Para executar o projeto e rodar os testes, é necessário ter instalado em sua m
 
 Embora já tivesse utilizado o Postman em outras oportunidades, essa sprint fez com que eu adquirisse conhecimento em algumas funções que ainda não havia descoberto. Alguns exemplos são as variaves para a collection, as abas de "pre-request script" e "test", assim como executar todos os testes de uma só vez. 
 
+## Issues e Melhorias
+
+As issues e melhorias encontradas e serem feitas no API da ServeRest, podem ser verificadas acessando o projeto dentro deste repositório, ou clicando [aqui](https://github.com/users/gianvancini/projects/4/).
+
 ## Autor
 
 Gian Vancini
