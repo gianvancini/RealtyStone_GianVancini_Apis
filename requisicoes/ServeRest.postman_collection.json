@@ -563,14 +563,14 @@
 								"exec": [
 									"let propertyName;\r",
 									"\r",
-									"pm.test(\"Status code is 201\", function() {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
 									"})\r",
 									"\r",
 									"propertyName = 'message'\r",
 									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
 									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('A senha deve ter pelo menos 5 caracteres.')\r",
 									"})"
 								],
 								"type": "text/javascript"
@@ -638,14 +638,14 @@
 								"exec": [
 									"let propertyName;\r",
 									"\r",
-									"pm.test(\"Status code is 201\", function() {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
 									"})\r",
 									"\r",
 									"propertyName = 'message'\r",
 									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
 									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('A senha deve ter no máximo 10 caracteres.')\r",
 									"})"
 								],
 								"type": "text/javascript"
@@ -713,14 +713,14 @@
 								"exec": [
 									"let propertyName;\r",
 									"\r",
-									"pm.test(\"Status code is 201\", function() {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
 									"})\r",
 									"\r",
 									"propertyName = 'message'\r",
 									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
 									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Provedor não permitido')\r",
 									"})"
 								],
 								"type": "text/javascript"
@@ -787,14 +787,14 @@
 								"exec": [
 									"let propertyName;\r",
 									"\r",
-									"pm.test(\"Status code is 201\", function() {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
 									"})\r",
 									"\r",
 									"propertyName = 'message'\r",
 									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
 									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql('Cadastro realizado com sucesso')\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Provedor não permitido')\r",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1802,6 +1802,100 @@
 					"response": []
 				},
 				{
+					"name": "delete product (valid)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 3];\r",
+									"            const deleteProduct = ultimoProduto._id; \r",
+									"\r",
+									"            pm.environment.set('deleteProduct', deleteProduct);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/produtos/{{deleteProduct}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"produtos",
+								"{{deleteProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete product in shopcart (valid)",
 					"event": [
 						{
@@ -1891,99 +1985,6 @@
 									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData[propertyName]).to.eql('Não é permitido excluir produto que faz parte de carrinho')\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/produtos/{{deleteProduct}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"produtos",
-								"{{deleteProduct}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete product (valid)",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const host = pm.environment.get('host');\r",
-									"\r",
-									"const getRequest = {\r",
-									"    url: `${host}/produtos`,\r",
-									"    method: \"GET\",\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"pm.sendRequest(getRequest, (err, res) => {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"    } else {\r",
-									"        const resposta = res.json();\r",
-									"\r",
-									"        if (resposta.quantidade > 0) {\r",
-									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 2];\r",
-									"            const deleteProduct = ultimoProduto._id; \r",
-									"\r",
-									"            pm.environment.set('deleteProduct', deleteProduct);\r",
-									"\r",
-									"        } else {\r",
-									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
-									"        }\r",
-									"    }\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"let propertyName;\r",
-									"\r",
-									"pm.test(\"Status code is 200\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"})\r",
-									"\r",
-									"propertyName = 'message'\r",
-									"pm.test(`Contains ${propertyName} property with the correct text`, () =>  {\r",
-									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql('Registro excluído com sucesso')\r",
 									"})"
 								],
 								"type": "text/javascript"
@@ -3217,6 +3218,54 @@
 							"pm.sendRequest(loginRequest, (err, res) => {",
 							"    console.log( err ? err : res.json());",
 							"    pm.environment.set(\"token\", res.json().authorization.slice(7));",
+							"})",
+							"",
+							"const productRequest = {",
+							"    url: `${host}/produtos`,",
+							"    method: \"POST\",",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'authorization': `Bearer ${pm.environment.get('token')}`",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(",
+							"            {",
+							"                \"nome\": \"batatinha\",",
+							"                \"preco\": 999,",
+							"                \"descricao\": \"cebola\",",
+							"                \"quantidade\": 111",
+							"            }",
+							"        )",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(productRequest, (err, res) => {",
+							"    console.log( err ? err : res.json());",
+							"})",
+							"",
+							"const product2Request = {",
+							"    url: `${host}/produtos`,",
+							"    method: \"POST\",",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'authorization': `Bearer ${pm.environment.get('token')}`",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(",
+							"            {",
+							"                \"nome\": \"batatinha2\",",
+							"                \"preco\": 999,",
+							"                \"descricao\": \"cebola2\",",
+							"                \"quantidade\": 111",
+							"            }",
+							"        )",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(product2Request, (err, res) => {",
+							"    console.log( err ? err : res.json());",
 							"})"
 						]
 					}
@@ -3273,6 +3322,157 @@
 						"body": {
 							"mode": "raw",
 							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carrinhos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create shopcart (duplicity)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let propertyName;\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"propertyName = 'message'\r",
+									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[propertyName]).to.eql(\"Não é permitido ter mais de 1 carrinho\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"const loginRequest = {\r",
+									"    url: `${host}/usuarios`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"nome\": \"Teste\",\r",
+									"            \"email\": \"teste@teste.com\",\r",
+									"            \"password\": \"teste\",\r",
+									"            \"administrador\": \"true\",\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(loginRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"const deleteRequest = {\r",
+									"    url: `${host}/carrinhos/concluir-compra`,\r",
+									"    method: \"DELETE\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(deleteRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})\r",
+									"\r",
+									"\r",
+									"const getRequest = {\r",
+									"    url: `${host}/produtos`,\r",
+									"    method: \"GET\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getRequest, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.error(err);\r",
+									"    } else {\r",
+									"        const resposta = res.json();\r",
+									"\r",
+									"        if (resposta.quantidade > 0) {\r",
+									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
+									"            const id = ultimoProduto._id;\r",
+									"\r",
+									"            pm.environment.set('idProduct', id);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
+									"        }\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"const postRequest = {\r",
+									"    url: `${host}/carrinhos`,\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json',\r",
+									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"produtos\": [\r",
+									"                {\r",
+									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
+									"                \"quantidade\": 1\r",
+									"                }\r",
+									"            ]\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(postRequest, (err, res) => {\r",
+									"    console.log( err ? err : res.json());\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"{{idProduct}}\",\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3545,136 +3745,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/carrinhos",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"carrinhos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create shopcart (duplicity)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"let propertyName;\r",
-									"\r",
-									"pm.test(\"Status code is 400\", function() {\r",
-									"    pm.response.to.have.status(400);\r",
-									"})\r",
-									"\r",
-									"propertyName = 'message'\r",
-									"pm.test(`Contains ${propertyName} property`, () =>  {\r",
-									"    let jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[propertyName]).to.eql(\"Não é permitido ter mais de 1 carrinho\");\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const host = pm.environment.get('host');\r",
-									"\r",
-									"const deleteRequest = {\r",
-									"    url: `${host}/carrinhos/concluir-compra`,\r",
-									"    method: \"DELETE\",\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json',\r",
-									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"pm.sendRequest(deleteRequest, (err, res) => {\r",
-									"    console.log( err ? err : res.json());\r",
-									"})\r",
-									"\r",
-									"\r",
-									"const getRequest = {\r",
-									"    url: `${host}/produtos`,\r",
-									"    method: \"GET\",\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json'\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"pm.sendRequest(getRequest, (err, res) => {\r",
-									"    if (err) {\r",
-									"        console.error(err);\r",
-									"    } else {\r",
-									"        const resposta = res.json();\r",
-									"\r",
-									"        if (resposta.quantidade > 0) {\r",
-									"            const ultimoProduto = resposta.produtos[resposta.produtos.length - 1];\r",
-									"            const id = ultimoProduto._id;\r",
-									"\r",
-									"            pm.environment.set('idProduct', id);\r",
-									"\r",
-									"        } else {\r",
-									"            console.log(\"Nenhum produto encontrado na resposta.\");\r",
-									"        }\r",
-									"    }\r",
-									"})\r",
-									"\r",
-									"const postRequest = {\r",
-									"    url: `${host}/carrinhos`,\r",
-									"    method: \"POST\",\r",
-									"    header: {\r",
-									"        'Content-Type': 'application/json',\r",
-									"        'authorization': `Bearer ${pm.environment.get('token')}`\r",
-									"    },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"produtos\": [\r",
-									"                {\r",
-									"                \"idProduto\": `${pm.environment.get('idProduct')}`,\r",
-									"                \"quantidade\": 1\r",
-									"                }\r",
-									"            ]\r",
-									"        })\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"pm.sendRequest(postRequest, (err, res) => {\r",
-									"    console.log( err ? err : res.json());\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"{{idProduct}}\",\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
